@@ -1,0 +1,201 @@
+{
+    "sales": [
+        {
+            "TaskName": "Load and Explore Sales Data",
+            "Description": "This task involves loading the sales data into the analysis environment and doing a preliminary check to understand the basic structure and content of the data.",
+            "Instructions": [
+                "1. Write Python code to load the sales dataset available at 'synthetic_ecommerce_data.csv' ",
+                "2. Print basic information like the number records and names of all columns. "
+            ],
+            "execute_code": true,
+            "title": "Initial Sales Data Assessment",
+            "code": "import pandas as pd; sales_data = pd.read_csv('synthetic_ecommerce_data.csv'); print(sales_data.shape); print(sales_data.columns)"
+        },
+        {
+            "TaskName": "Printing Sales Summary Statistics",
+            "Description": "Print basic summary statistics to get an overview of sales figures.",
+            "Instructions": [
+                "1. Sales data available at 'synthetic_ecommerce_data.csv' ",
+                "2. Each row shows sales for an item in an order id, thus order id will span multiple rows when customer purchased multiple items at once. ",
+                "3. Write python code to compute and to print summary statistics for sales figures that are feasible with the given data, like total sales, number of orders, average sale per order etc"
+            ],
+            "execute_code": true,
+            "title": "Initial Sales Data Assessment",
+            "code": "import pandas as pd; df = pd.read_csv('synthetic_ecommerce_data.csv'); total_sales = df['Sales'].sum(); num_orders = df['Order ID'].nunique(); avg_sales_per_order = total_sales / num_orders; print('Total Sales: ', total_sales); print('Number of Orders: ', num_orders); print('Average Sales per Order: ', avg_sales_per_order);"
+        },
+        {
+            "TaskName": "Order shipping analysis",
+            "Description": "Analyse the speed with which order is fulfilled from order to actual shipping",
+            "Instructions": [
+                "1. Sales data available at 'synthetic_ecommerce_data.csv'. ",
+                "2. Find and print the average time between order date to shipping date across all sales. ",
+                "3. Find and print the average time between order date to shipping date for each ship mode across all sales. ",
+                "4. The final prints should have precision upto seconds only"
+            ],
+            "execute_code": true,
+            "title": "Order Fulfillment Efficiency Analysis",
+            "code": "import pandas as pd; data = pd.read_csv('synthetic_ecommerce_data.csv'); data['Time to Ship'] = pd.to_datetime(data['Ship Date']) - pd.to_datetime(data['Order Date']); avg_time_to_ship = data['Time to Ship'].mean(); print('Average time between order date and shipping date across all sales:', avg_time_to_ship); ship_mode_times_to_ship = {}; ship_mode_times_to_ship['Second Class'] = data[data['Ship Mode'] == 'Second Class']['Time to Ship'].mean(); print('Average time between order date and shipping date for each ship mode across all sales:', {'Second Class': ship_mode_times_to_ship['Second Class']}); ship_mode_times_to_ship['Standard Class'] = data[data['Ship Mode'] == 'Standard Class']['Time to Ship'].mean(); print('Average time between order date and shipping date for each ship mode across all sales:', ship_mode_times_to_ship); ship_mode_times_to_ship['First Class'] = data[data['Ship Mode'] == 'First Class']['Time to Ship'].mean(); print('Average time between order date and shipping date for each ship mode across all sales:', ship_mode_times_to_ship); ship_mode_times_to_ship['Same Day'] = data[data['Ship Mode'] == 'Same Day']['Time to Ship'].mean(); print('Average time between order date and shipping date for each ship mode across all sales:', ship_mode_times_to_ship);"
+
+        },
+        {
+            "TaskName": "Customer Distribution by relevant customer related information",
+            "Description": "Examine how customers are distributed across gender, age group, segment etc. to identify areas of strength and opportunities for improvement.",
+            "Instructions": [
+                "1. Sales data available at 'synthetic_ecommerce_data.csv'. ",
+                "2. Compute and to find the number of unique customer ids in each of the age groups. Make sure to print these counts of unique customer ids over age groups in descending order ",
+                "3. Compute and to find the number ofunique customer ids in each gender. Make sure to print these counts of unique customer ids over gender in descending order ",
+                "4. Compute and to find the number ofunique customer ids in each segments. Make sure to print these counts of unique customer ids over segments in descending order "
+            ],
+            "execute_code": true,
+            "title": "Customer Demographic Breakdown",
+            "code": "import pandas as pd; df = pd.read_csv('synthetic_ecommerce_data.csv'); age_groups = df['AgeGroup'].unique(); counts = df.groupby('AgeGroup')['Customer ID'].nunique().sort_values(ascending=False); print('Number of unique customer ids over age groups: '); print(counts); genders = df['Gender'].unique(); counts = df.groupby('Gender')['Customer ID'].nunique().sort_values(ascending=False); print('\nNumber of unique customer ids over gender: '); print(counts); segments = df['Segment'].unique(); counts = df.groupby('Segment')['Customer ID'].nunique().sort_values(ascending=False); print('\nNumber of unique customer ids over segments: '); print(counts)"
+        },
+        {
+            "TaskName": "Geographic Distribution of sales",
+            "Description": "Examine how sales are distributed across location related columns to understand Market penetration in different areas",
+            "Instructions": [
+                "1. Sales data available at 'synthetic_ecommerce_data.csv'. ",
+                "2. Compute and to print the number of sales in each region, then in each state and lastly in each city. Make sure to print these counts over sales in descending order"
+            ],
+            "execute_code": true,
+            "title": "Sales Geographical Distribution Insights",
+            "code": "import pandas as pd; df = pd.read_csv('synthetic_ecommerce_data.csv'); print('Sales by Region:'); print(df.groupby('Region')['Sales'].count().sort_values(ascending=False)); print('Sales by State:'); print(df.groupby('State')['Sales'].count().sort_values(ascending=False)); print('Sales by City:'); print(df.groupby('City')['Sales'].count().sort_values(ascending=False));"
+        },
+        {
+            "TaskName": "Sales distribution across product categories and sub-categories",
+            "Description": "Examine how sales are distributed across product related columns to understand top-selling product categories",
+            "Instructions": [
+                "1. Sales data available at 'synthetic_ecommerce_data.csv'. ",
+                "2. Compute and to print the number of sales in each product category, then in each product sub-category. All counts over sales to be printed in descending order"
+            ],
+            "execute_code": true,
+            "title": "Product Category Sales Analysis",
+            "code": "import pandas as pd; data = pd.read_csv('synthetic_ecommerce_data.csv'); print('Product Categories:'); print(data.groupby('Category')['Sales'].count().sort_values(ascending=False)); print('Product Sub-Categories:'); print(data.groupby('Sub-Category')['Sales'].count().sort_values(ascending=False));"
+        },
+        {
+            "TaskName": "Plot Sales Trends Over Time",
+            "Description": "Examine how sales trend across days, months and years ",
+            "Instructions": [
+                "1. Load the sales dataset from 'synthetic_ecommerce_data.csv' ",
+                "2. Aggregate sales data over month-year intervals of Order Date ",
+                "3. Create plot showing sales trend obtained above ",
+                "4. save the plot in current working directory for easy visualization. ",
+                "Note: Ensure that the month-year aggregation reflects the sum of sales for each corresponding period. "
+            ],
+            "execute_code": true,
+            "title": "Sales Trends and Temporal Patterns",
+            "code": "import pandas as pd; import matplotlib.pyplot as plt; import os; sales_data = pd.read_csv('synthetic_ecommerce_data.csv'); sales_data['Order Date'] = pd.to_datetime(sales_data['Order Date']); sales_data['Month-Year'] = sales_data['Order Date'].dt.to_period('M'); monthly_sales = sales_data.groupby('Month-Year')['Sales'].sum(); plt.figure(figsize=(10, 6)); monthly_sales.plot(kind='line', marker='o', linestyle='-', color='b'); plt.title('Aggregated Sales Over Monthly Intervals'); plt.xlabel('Month-Year'); plt.ylabel('Total Sales ($)'); plt.savefig('monthly_sales_plot.png'); print(os.path.abspath('monthly_sales_plot.png'));"
+        }
+    ],
+    "sales_org": [
+        {
+            "TaskName": "Load and Explore Sales Data",
+            "Description": "This task involves loading the sales data into the analysis environment and doing a preliminary check to understand the basic structure and content of the data.",
+            "Instructions": "Write Python code to load the sales dataset available at 'synthetic_ecommerce_data.csv' and display basic information like the number of rows and columns, and the first few entries.",
+            "execute_code": true
+        },
+        {
+            "TaskName": "Sales Summary Statistics",
+            "Description": "Compute basic summary statistics to get an overview of sales figures. This helps in understanding the general sales performance and key metrics.",
+            "Instructions": "Sales data available at 'synthetic_ecommerce_data.csv'. Write python code to compute basic summary statistics for sales figures, like total sales, average sales, and sales variance over time.",
+            "execute_code": true
+        },
+        {
+            "TaskName": "Sales Trends Over Time",
+            "Description": "Analyzing sales trends over time to identify patterns, peak periods, and any irregularities in sales performance.",
+            "Instructions": "Write python code to create time series plots showing sales trends over different time periods (daily, monthly, yearly).  Data present at 'synthetic_ecommerce_data.csv'",
+            "execute_code": true
+        },
+        {
+            "TaskName": "Sales Distribution by Region and Product",
+            "Description": "Examine how sales are distributed across different regions and product categories to identify areas of strength and opportunities for improvement.",
+            "Instructions": "Write python code to analyze and visualize the distribution of sales by different regions and product categories.  Data present at 'synthetic_ecommerce_data.csv'",
+            "execute_code": true
+        },
+        {
+            "TaskName": "Final Sales Report",
+            "Description": "Compile all the key findings, trends, and insights into a comprehensive report aimed at providing actionable recommendations for the sales team.",
+            "Instructions": "Compile the key findings, trends, and insights into a comprehensive sales report.  Data present at 'synthetic_ecommerce_data.csv'",
+            "execute_code": true
+        }
+    ],
+    "marketting": [
+        {
+            "TaskName": "Load Marketing Data",
+            "Description": "Load the marketing dataset to begin analysis, focusing on understanding the structure and content of the data related to marketing activities.",
+            "Instructions": "Import the dataset and preview basic details like column names and data types, focusing on marketing-related information.  Data present at '/home/keshav/working_directory/data/ecommerce_data.csv'"
+        },
+        {
+            "TaskName": "Customer Demographics Analysis",
+            "Description": "Analyze customer demographics to better understand the customer base and identify key market segments.",
+            "Instructions": "Write code to analyze customer demographics such as age, gender, and region."
+        },
+        {
+            "TaskName": "Insight Placeholder",
+            "Description": "Review the demographics data to understand the customer base and identify key target segments."
+        },
+        {
+            "TaskName": "Campaign Performance Analysis",
+            "Description": "Evaluate the effectiveness of different marketing campaigns to understand their impact on customer engagement and sales.",
+            "Instructions": "Analyze the effectiveness of different marketing campaigns in terms of customer engagement and sales conversions."
+        },
+        {
+            "TaskName": "Insight Placeholder",
+            "Description": "Evaluate which marketing campaigns are most effective and why, based on the analysis."
+        },
+        {
+            "TaskName": "Sentiment Analysis of Customer Reviews",
+            "Description": "Perform sentiment analysis on customer reviews to understand customer opinions and overall satisfaction.",
+            "Instructions": "Perform sentiment analysis on customer reviews to gauge overall customer satisfaction."
+        },
+        {
+            "TaskName": "Insight Placeholder",
+            "Description": "Interpret the sentiment analysis results to understand customer opinions and areas for improvement."
+        },
+        {
+            "TaskName": "Comprehensive Marketing Report",
+            "Description": "Summarize all the insights from the analysis into a detailed report that can guide marketing strategies and decisions.",
+            "Instructions": "Summarize insights from customer demographics, campaign performance, and sentiment analysis into a detailed marketing report."
+        }
+    ],
+    "dev_team": [
+        {
+            "TaskName": "Load Dataset for Analysis",
+            "Description": "The first step in data analysis is to import the dataset into the Python environment and review its basic structure to understand what data is available.",
+            "Instructions": "Import the dataset and use Python to display initial data characteristics like size, structure, and types."
+        },
+        {
+            "TaskName": "Data Cleaning and Preprocessing",
+            "Description": "Prepare the data for analysis by cleaning and preprocessing, which includes addressing missing values, outliers, and ensuring data is in the correct format.",
+            "Instructions": "Write code to clean the data, addressing missing values, outliers, and data transformation needs."
+        },
+        {
+            "TaskName": "Feature Engineering",
+            "Description": "Create new features from existing data to enhance the dataset and make it more suitable for advanced analytical techniques.",
+            "Instructions": "Develop new features from the existing data that could be relevant for advanced analysis and modeling."
+        },
+        {
+            "TaskName": "Exploratory Data Analysis",
+            "Description": "Conduct a thorough exploratory analysis to uncover underlying patterns, relationships, and insights in the data.",
+            "Instructions": "Conduct in-depth exploratory analysis, including correlation studies and data distribution analysis."
+        },
+        {
+            "TaskName": "Insight Placeholder",
+            "Description": "Interpret exploratory analysis results to uncover patterns, relationships, or anomalies in the data."
+        },
+        {
+            "TaskName": "Predictive Modeling",
+            "Description": "Build and train predictive models to make forecasts or classify data, and evaluate the performance of these models.",
+            "Instructions": "Build and train predictive models suitable for the dataset, such as regression models or classifiers."
+        },
+        {
+            "TaskName": "Insight Placeholder",
+            "Description": "Evaluate model performance and identify key predictors. Provide insights on how the model can be used or improved."
+        },
+        {
+            "TaskName": "Technical Report for Development Team",
+            "Description": "Compile all the findings, model results, and insights into a detailed report tailored for a technical audience such as developers or data scientists.",
+            "Instructions": "Compile the analysis, findings, and model results into a detailed technical report suited for a developer or data science audience."
+        }
+    ]
+}
