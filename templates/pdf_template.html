@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .task-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .task-title {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .task-description {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="{{ base_url }}/static/logo_dark.png" alt="Logo" style="height: 50px;">
+    <p>Date: {{ date }}</p>
+    {% for task in tasks %}
+    <div class="task-card">
+        <h2 class="task-title">{{ task.task_description }}</h2>
+        {% if task.reject_feedback %}
+        <!-- <p>Feedback: {{ task.reject_feedback }}</p> -->
+        <p>Feedback:<br> {{ task.reject_feedback.strip().replace('\n', '<br>') }}</p>
+        {% endif %}
+        <!-- <p class="task-description">{{ task.task_description }}</p> -->
+        {% if task.stdout %}
+        <pre>{{ task.stdout }}</pre>
+        {% endif %}
+        {% if task.images_saved %}
+        {% for image in task.images_saved %}
+        <img src="{{ base_url }}/static/{{ image.split('/')[2:] | join('/') }}" alt="Image description">
+        <!-- <img src="{{ '/' + image.split('/')[2:] | join('/') }}" alt="Image description"> -->
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endfor %}
+</body>
+
+</html>
